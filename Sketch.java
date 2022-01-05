@@ -1,53 +1,141 @@
+
+//import javax.net.ssl.SSLPeerUnverifiedException;
 import processing.core.PApplet;
 
 public class Sketch extends PApplet {
 
+  float brightY = 500;
+  float brightX = -100;
+  float sunSpeedX = 1;
+  float sunSpeedY = 1;
 
-  /**
-   * state global variables
-   *  
-   * */ 
-  public float circleY = -50;
+  float darkY = 500;
+  float darkX = -100;
+  float moonspeedX = 1;
+  float moonspeedY = 1;
 
-	
-	
-  /**
-   * Called once at the beginning of execution, put your size all in this method
+  float red = 138;
+  float green = 192;
+  float blue = 230;
+
+  float red2 = 138;
+  float green2 = 192;
+  float blue2 = 230;
+  float counter = 1;
+
+  /*
+   * Palette:
+   * Morning: (138, 192, 230)
+   * Sunset: (253, 140, 20)
+   * Night: (10, 10, 10)
    */
+
   public void settings() {
-	  // put your size call here
-    size(200, 200);
+    size(400, 400);
   }
 
-  /** 
-   * Called once at the beginning of execution.  Add initial set up
-   * values here i.e background, stroke, fill etc.
-   */
-  public void setup() {
-    background(210, 255, 173);
-  }
-
-  /**
-   * Called repeatedly, anything drawn to the screen goes here
-   */
   public void draw() {
-	  
-    // clear out old frames
-    background(32);
 
-    // draw current frame based on state
-    ellipse(100, circleY, 50, 50);
-  
-    // modify state
-    circleY = circleY + 1;
-  
-    // reset state
-    if(circleY > height+50) {
-      circleY = 0;
+    if (counter % 2 == 1) {
+      brightX = brightX + sunSpeedX;
+      double placeholder;
+      placeholder = (0.0025 * (Math.pow(brightX, 2)) + -(brightX) + 150);
+      brightY = (float) placeholder;
+      background(red, green, blue);
+
+      if ((brightX >= 10) && (brightX < 200)) {
+        if (red > 50) {
+          red = red - 1;
+        }
+        if (green > 140) {
+          green = green - 1;
+        }
+        if (blue < 250) {
+          blue = blue + 1;
+        }
+      }
+
+      if ((brightX >= 300) && (brightX < 350)) {
+        if (red < 253) {
+          red = red + 4;
+        }
+        if (green < 140) {
+          green = green - 6;
+        }
+        if (blue > 20) {
+          blue = blue - 5;
+        }
+      }
+
+      if (brightX >= 425) {
+        if (red >= 10) {
+          red = red - 10;
+        }
+        if (green >= 10) {
+          green = green - 10;
+        }
+        if (blue >= 10) {
+          blue = blue - 10;
+        }
+      }
+      // reset
+      if (brightX == 500) {
+        counter++;
+        brightX = -75;
+        brightY = 500;
+      }
     }
+
+    if (counter % 2 == 0) {
+
+      darkX = darkX + moonspeedX;
+      double coordshift2;
+      coordshift2 = (0.0025 * (Math.pow(darkX, 2)) + -(darkX) + 150);
+      darkY = (float) coordshift2;
+
+      if (darkX <= 400) {
+        red2 = 10;
+        green2 = 10;
+        blue2 = 10;
+
+      }
+      background(red2, green2, blue2);
+
+      if (darkX > 400) {
+        if (red2 < 140) {
+          red2 = red2 + 20;
+        }
+        if (green2 < 237) {
+          green2 = green2 + 20;
+        }
+        if (blue2 < 250) {
+          blue2 = blue2 + 20;
+        }
+      }
+
+      if (darkX == 500) {
+        counter--;
+        darkX = -75;
+        darkY = 500;
+        red = red2;
+        green = green2;
+        blue = blue2;
+
+      }
+    }
+    stroke(255, 255, 255);
+    fill(255, 255, 255);
+    ellipse(darkX, darkY, 50, 50);
+    noStroke();
+    fill(red2, green2, blue2);
+    ellipse(darkX + 10, darkY, 35, 35);
+
+    stroke(249, 240, 100);
+    fill(249, 240, 100);
+    ellipse(brightX, brightY, 50, 50);
+
+    fill(131, 101, 57);
+    stroke(100);
+    rect(0, 300, 400, 300);
   }
-  
-  // define other methods down here.
-
-
 }
